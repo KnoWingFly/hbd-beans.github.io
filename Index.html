@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 21st Birthday Fa"Beans"! 🎉</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            opacity: 0;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .beans-name {
+            color: #ffd700;
+            font-style: italic;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .age-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .photo-section {
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+            opacity: 0;
+        }
+
+        .photo-frame {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .message-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 60px auto;
+            max-width: 800px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+        }
+
+        .message-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .message-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            opacity: 0.95;
+        }
+
+        .cake-section {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0;
+        }
+
+        .cake-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cake-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 80px;
+        }
+
+        .cake {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(to bottom, #ff69b4 0%, #ff1493 100%);
+            border-radius: 20px 20px 0 0;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cake::before {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, #ff1493 0%, #c71585 100%);
+        }
+
+        .candles-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .candle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(to top, #ff6600, #ffff00);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            animation: flicker 0.3s infinite alternate;
+            transition: opacity 0.3s ease;
+        }
+
+        .flame.out {
+            opacity: 0;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) translateY(0); }
+            100% { transform: scale(1.05) translateY(-2px); }
+        }
+
+        .candle-stick {
+            width: 10px;
+            height: 50px;
+            background: linear-gradient(to right, #fff, #e0e0e0);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .instruction {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .floating-element {
+            position: fixed;
+            font-size: 3rem;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .age-badge {
+                font-size: 1.5rem;
+                padding: 10px 30px;
+            }
+            
+            .cake {
+                width: 250px;
+                height: 170px;
+            }
+            
+            .candles-container {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="Music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" onclick="toggleMusic()" id="musicBtn">
+        🔇
+    </div>
+
+    <div class="floating-element" style="top: 10%; left: 10%;">🎈</div>
+    <div class="floating-element" style="top: 20%; right: 15%;">🎉</div>
+    <div class="floating-element" style="bottom: 30%; left: 5%;">🎊</div>
+    <div class="floating-element" style="bottom: 20%; right: 10%;">🎁</div>
+    <div class="floating-element" style="top: 50%; left: 20%;">⭐</div>
+    <div class="floating-element" style="top: 60%; right: 25%;">✨</div>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="title">Happy Birthday<br><span class="beans-name">Fa"Beans"</span></h1>
+            <p class="subtitle">Fabian Dustin Chandra</p>
+            <div class="age-badge">21 Years Young! 🎂</div>
+        </div>
+
+        <div class="photo-section">
+            <div class="photo-frame">
+                <img src="Image.webp" alt="Fabian Dustin Chandra">
+            </div>
+        </div>
+
+        <div class="message-section">
+            <h2>🎉 A Special Message for You 🎉</h2>
+            <p>
+                Selamat Ulang Tahun Fabian, Selamat memasuki usia 21 tahun. 
+                Semoga di usia yang baru ini, semua impian dan harapanmu dapat terwujud.
+                Sehat selalu, dan Panjang umur.
+            </p>
+        </div>
+
+        <div class="cake-section">
+            <h2 class="cake-title">🎂 Make a Wish & Blow Out the Candles! 🎂</h2>
+            <div class="cake-container">
+                <div class="candles-container" id="candles">
+                    <div class="candle" onclick="blowCandle(0)">
+                        <div class="flame" data-candle="0"></div>
+                        <div class="candle-stick"></div>
+                    </div>
+                    <div class="candle" onclick="blowCandle(1)">
+                        <div class="flame" data-candle="1"></div>
+                        <div class="candle-stick"></div>
+                    </div>
+                    <div class="candle" onclick="blowCandle(2)">
+                        <div class="flame" data-candle="2"></div>
+                        <div class="candle-stick"></div>
+                    </div>
+                </div>
+                <div class="cake"></div>
+            </div>
+            <p class="instruction">Click on each candle to blow it out! 💨</p>
+        </div>
+    </div>
+
+    <script>
+        let musicPlaying = false;
+        let candlesBlown = 0;
+        const totalCandles = 3;
+
+        // Initialize animations
+        window.addEventListener('load', () => {
+            initAnimations();
+            createFloatingAnimation();
+        });
+
+        function initAnimations() {
+            // Hero section animation
+            anime({
+                targets: '.hero-section',
+                opacity: [0, 1],
+                translateY: [-50, 0],
+                duration: 1500,
+                easing: 'easeOutExpo'
+            });
+
+            // Photo section animation
+            anime({
+                targets: '.photo-section',
+                opacity: [0, 1],
+                scale: [0.8, 1],
+                duration: 1500,
+                delay: 500,
+                easing: 'easeOutElastic(1, .6)'
+            });
+
+            // Message section animation
+            anime({
+                targets: '.message-section',
+                opacity: [0, 1],
+                translateX: [-100, 0],
+                duration: 1500,
+                delay: 1000,
+                easing: 'easeOutExpo'
+            });
+
+            // Cake section animation
+            anime({
+                targets: '.cake-section',
+                opacity: [0, 1],
+                translateY: [100, 0],
+                duration: 1500,
+                delay: 1500,
+                easing: 'easeOutExpo'
+            });
+
+            // Age badge pulse
+            anime({
+                targets: '.age-badge',
+                scale: [1, 1.1, 1],
+                duration: 2000,
+                loop: true,
+                easing: 'easeInOutQuad'
+            });
+        }
+
+        function createFloatingAnimation() {
+            anime({
+                targets: '.floating-element',
+                translateY: [
+                    { value: -20, duration: 2000 },
+                    { value: 0, duration: 2000 }
+                ],
+                translateX: [
+                    { value: 10, duration: 2000 },
+                    { value: -10, duration: 2000 }
+                ],
+                rotate: [
+                    { value: 10, duration: 2000 },
+                    { value: -10, duration: 2000 }
+                ],
+                loop: true,
+                easing: 'easeInOutSine',
+                delay: anime.stagger(200)
+            });
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            
+            if (musicPlaying) {
+                audio.pause();
+                btn.textContent = '🔇';
+                musicPlaying = false;
+            } else {
+                audio.play();
+                btn.textContent = '🔊';
+                musicPlaying = true;
+            }
+        }
+
+        function blowCandle(index) {
+            const flame = document.querySelector(`.flame[data-candle="${index}"]`);
+            
+            if (!flame.classList.contains('out')) {
+                flame.classList.add('out');
+                candlesBlown++;
+                
+                // Animate candle blow
+                anime({
+                    targets: flame,
+                    scale: [1, 0.5],
+                    opacity: [1, 0],
+                    duration: 500,
+                    easing: 'easeOutExpo'
+                });
+
+                // Check if all candles are blown
+                if (candlesBlown === totalCandles) {
+                    setTimeout(() => {
+                        celebrateWithConfetti();
+                    }, 500);
+                }
+            }
+        }
+
+        function celebrateWithConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd93d', '#6bcf7f', '#a78bfa', '#fb7185'];
+            const confettiCount = 100;
+
+            for (let i = 0; i < confettiCount; i++) {
+                createConfetti(colors[Math.floor(Math.random() * colors.length)]);
+            }
+
+            const celebration = document.createElement('div');
+            celebration.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.95);
+                color: #667eea;
+                padding: 40px 60px;
+                border-radius: 20px;
+                font-size: 2rem;
+                font-weight: bold;
+                text-align: center;
+                z-index: 1000;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            `;
+            celebration.innerHTML = '🎉 Happy Birthday Beans! 🎉<br><span style="font-size: 1.2rem;">May all your wishes come true!</span>';
+            document.body.appendChild(celebration);
+
+            anime({
+                targets: celebration,
+                scale: [0, 1],
+                opacity: [0, 1],
+                duration: 800,
+                easing: 'easeOutElastic(1, .6)'
+            });
+
+            setTimeout(() => {
+                anime({
+                    targets: celebration,
+                    opacity: [1, 0],
+                    scale: [1, 0.8],
+                    duration: 500,
+                    easing: 'easeInExpo',
+                    complete: () => celebration.remove()
+                });
+            }, 4000);
+        }
+
+        function createConfetti(color) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = color;
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-20px';
+            document.body.appendChild(confetti);
+
+            anime({
+                targets: confetti,
+                translateY: window.innerHeight + 100,
+                translateX: anime.random(-200, 200),
+                rotate: anime.random(0, 360),
+                scale: [
+                    { value: anime.random(0.5, 1.5), duration: 500 },
+                    { value: 0, duration: 500, delay: 1000 }
+                ],
+                opacity: [
+                    { value: 1, duration: 0 },
+                    { value: 0, duration: 500, delay: 1500 }
+                ],
+                duration: 3000,
+                easing: 'easeInCubic',
+                complete: () => confetti.remove()
+            });
+        }
+    </script>
+</body>
+</html>
